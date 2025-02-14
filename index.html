@@ -6,19 +6,22 @@
     <title>Chatbot EV-AI</title>
     <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
     <style>
-        /* Rende il chatbot a schermo intero */
+        /* Imposta il chatbot a schermo intero */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
+            background-color: #101330; /* Sfondo scuro per un look più elegante */
         }
-        
+
+        /* Area della chat che occupa tutta la pagina */
         #n8n-chat {
-            flex: 1; /* Occupa tutto lo spazio disponibile */
+            flex: 1;
+            width: 100%;
+            height: calc(100% - 40px); /* Calcola l'altezza rimanente per lasciare spazio al footer */
         }
 
         /* Stile per il footer personalizzato */
@@ -28,13 +31,15 @@
             background: #101330; /* Sfondo scuro */
             color: white;
             font-size: 14px;
+            width: 100%;
             position: fixed;
             bottom: 0;
-            width: 100%;
+            left: 0;
         }
     </style>
 </head>
 <body>
+
     <div id="n8n-chat"></div>
     <div id="custom-footer">Powered by <strong>EV-AI</strong></div>
 
@@ -47,17 +52,21 @@
             mode: 'fullscreen',  // Chatbot a schermo intero
             showWelcomeScreen: true,
             defaultLanguage: 'it',
-            initialMessages: [],
+            initialMessages: [
+                "Ciao! 👋",
+                "Sono il tuo assistente virtuale EV-AI. Come posso aiutarti oggi?"
+            ],
             i18n: {
                 it: {
                     title: 'Ciao, come posso aiutarti oggi?',
                     subtitle: '🟢 Disponibile',
-                    footer: '', /* Rimuove il footer originale di n8n */
+                    footer: '', /* Nasconde il footer originale di n8n */
                     getStarted: 'Nuova Conversazione',
                     inputPlaceholder: 'Scrivi qui...',
                 }
             }
         });
     </script>
+
 </body>
 </html>
