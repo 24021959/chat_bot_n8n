@@ -45,11 +45,9 @@
             z-index: 1000;
         }
 
-        /* Forza la visibilità della casella di input */
-        .n8n-chat__input-container {
-            display: flex !important;
-            position: relative;
-            z-index: 999;
+        /* Nasconde il footer originale di n8n */
+        .n8n-chat__footer {
+            display: none !important;
         }
     </style>
 </head>
@@ -71,7 +69,7 @@
             defaultLanguage: 'it',
             initialMessages: [
             
-        
+                "Sono il tuo assistente virtuale EV-AI. Come posso aiutarti oggi?"
             ],
             i18n: {
                 it: {
@@ -87,4 +85,3 @@
 
 </body>
 </html>
-
