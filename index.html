@@ -4,48 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot n8n</title>
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
-        #chat { width: 300px; margin: auto; border: 1px solid #ccc; padding: 10px; }
-        #messages { height: 300px; overflow-y: auto; border-bottom: 1px solid #ccc; }
-        input { width: 80%; padding: 5px; }
-        button { padding: 5px; }
+        #n8n-chat { position: fixed; bottom: 20px; right: 20px; width: 400px; height: 600px; }
     </style>
 </head>
 <body>
     <h1>Chatbot n8n</h1>
-    <div id="chat">
-        <div id="messages"></div>
-        <input type="text" id="userInput" placeholder="Scrivi un messaggio...">
-        <button onclick="sendMessage()">Invia</button>
-    </div>
-    <script>
-        const webhookUrl = "https://n8n-n8n.hcrxqs.easypanel.host/webhook/643b6895-06ac-4ba6-861e-f14bb4949d19/chat";
+    
+    <div id="n8n-chat"></div>
 
-        function sendMessage() {
-            let input = document.getElementById("userInput");
-            let messages = document.getElementById("messages");
-            let userMessage = input.value.trim();
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
-            if (userMessage === "") return;  // Non inviare messaggi vuoti
-
-            messages.innerHTML += `<p><strong>Tu:</strong> ${userMessage}</p>`;
-            input.value = "";
-
-            fetch(webhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: userMessage })
-            })
-            .then(response => response.json())
-            .then(data => {
-                messages.innerHTML += `<p><strong>Bot:</strong> ${data.response || "Errore nella risposta"}</p>`;
-            })
-            .catch(error => {
-                console.error("Errore:", error);
-                messages.innerHTML += `<p style="color: red;"><strong>Errore:</strong> Impossibile connettersi al server.</p>`;
-            });
-        }
+        createChat({
+            webhookUrl: 'https://n8n-n8n.hcrxqs.easypanel.host/webhook/643b6895-06ac-4ba6-861e-f14bb4949d19/chat',
+            target: '#n8n-chat',
+            mode: 'window',
+            showWelcomeScreen: true,
+            defaultLanguage: 'en',
+            initialMessages: [
+                'Ciao! 👋',
+                'Sono il tuo assistente virtuale. Come posso aiutarti oggi?'
+            ],
+            i18n: {
+                en: {
+                    title: 'Ciao! 👋',
+                    subtitle: 'Scrivimi il tuo messaggio.',
+                    footer: '',
+                    getStarted: 'Nuova Conversazione',
+                    inputPlaceholder: 'Scrivi qui...',
+                }
+            }
+        });
     </script>
 </body>
 </html>
