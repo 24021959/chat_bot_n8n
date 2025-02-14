@@ -14,14 +14,14 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            background-color: #101330; /* Sfondo scuro per un look più elegante */
+            background-color: #101330; /* Sfondo scuro */
         }
 
-        /* Area della chat che occupa tutta la pagina */
+        /* Contenitore del chatbot */
         #n8n-chat {
             flex: 1;
             width: 100%;
-            height: calc(100% - 40px); /* Calcola l'altezza rimanente per lasciare spazio al footer */
+            height: 100%;
         }
 
         /* Stile per il footer personalizzato */
@@ -35,6 +35,12 @@
             position: fixed;
             bottom: 0;
             left: 0;
+            z-index: 1000;
+        }
+
+        /* Assicura che il campo di input sia visibile */
+        .n8n-chat__input-container {
+            display: flex !important;
         }
     </style>
 </head>
@@ -53,8 +59,7 @@
             showWelcomeScreen: true,
             defaultLanguage: 'it',
             initialMessages: [
-                "Ciao! 👋",
-                "Sono il tuo assistente virtuale EV-AI. Come posso aiutarti oggi?"
+             "Sono il tuo assistente virtuale EV-AI. Come posso aiutarti oggi?"
             ],
             i18n: {
                 it: {
@@ -70,3 +75,4 @@
 
 </body>
 </html>
+
