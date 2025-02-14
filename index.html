@@ -6,7 +6,7 @@
     <title>Chatbot EV-AI</title>
     <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
     <style>
-        /* Imposta il chatbot a schermo intero */
+        /* Imposta il chatbot a schermo intero senza sovrapposizioni */
         html, body {
             margin: 0;
             padding: 0;
@@ -17,11 +17,20 @@
             background-color: #101330; /* Sfondo scuro */
         }
 
-        /* Contenitore del chatbot */
-        #n8n-chat {
-            flex: 1;
+        /* Contenitore del chatbot che occupa tutto lo schermo tranne il footer */
+        #chat-container {
+            flex-grow: 1;
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 40px); /* Altezza ridotta per non coprire il campo input */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Chat a schermo intero */
+        #n8n-chat {
+            flex-grow: 1;
+            width: 100%;
         }
 
         /* Stile per il footer personalizzato */
@@ -32,21 +41,23 @@
             color: white;
             font-size: 14px;
             width: 100%;
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            position: relative;
             z-index: 1000;
         }
 
-        /* Assicura che il campo di input sia visibile */
+        /* Forza la visibilità della casella di input */
         .n8n-chat__input-container {
             display: flex !important;
+            position: relative;
+            z-index: 999;
         }
     </style>
 </head>
 <body>
 
-    <div id="n8n-chat"></div>
+    <div id="chat-container">
+        <div id="n8n-chat"></div>
+    </div>
     <div id="custom-footer">Powered by <strong>EV-AI</strong></div>
 
     <script type="module">
@@ -59,7 +70,8 @@
             showWelcomeScreen: true,
             defaultLanguage: 'it',
             initialMessages: [
-             "Sono il tuo assistente virtuale EV-AI. Come posso aiutarti oggi?"
+                "Ciao! 👋",
+                "Sono il tuo assistente virtuale EV-AI. Come posso aiutarti oggi?"
             ],
             i18n: {
                 it: {
