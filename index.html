@@ -44,11 +44,6 @@
       position: relative;
       z-index: 1000;
     }
-
-    /* Nasconde il footer originale di n8n */
-    .n8n-chat__footer {
-      display: none !important;
-    }
   </style>
 </head>
 <body>
@@ -67,19 +62,41 @@
       showWelcomeScreen: true,
       defaultLanguage: 'it',
       initialMessages: [
-        "Ciao! 👋",
+        
         "Sono il tuo assistente virtuale EV-AI. Come posso aiutarti oggi?"
       ],
       i18n: {
         it: {
           title: 'Ciao, come posso aiutarti oggi?',
           subtitle: '🟢 Disponibile',
-          footer: '', // Nasconde il footer originale di n8n
+          footer: '', // Imposta a stringa vuota per nascondere il footer n8n (ove possibile)
           getStarted: 'Nuova Conversazione',
           inputPlaceholder: 'Scrivi qui...'
         }
       }
     });
+
+    // Utilizza un MutationObserver per rimuovere eventuali footer n8n che appaiono dinamicamente
+    const chatContainer = document.getElementById('n8n-chat');
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            // Se il nodo ha la classe n8n-chat__footer lo rimuove
+            if (node.classList.contains('n8n-chat__footer')) {
+              node.remove();
+            } else {
+              // Altrimenti cerca al suo interno e rimuove il footer
+              const footer = node.querySelector('.n8n-chat__footer');
+              if (footer) {
+                footer.remove();
+              }
+            }
+          }
+        });
+      });
+    });
+    observer.observe(chatContainer, { childList: true, subtree: true });
   </script>
 </body>
 </html>
