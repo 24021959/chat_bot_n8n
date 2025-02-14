@@ -99,8 +99,13 @@
       z-index: 1000;
     }
 
-    /* Nasconde il footer originale di n8n */
+    /* Nasconde il footer originale di n8n (chat) */
     .n8n-chat__footer {
+      display: none !important;
+    }
+
+    /* Nasconde il footer originale di n8n (welcome screen) */
+    .n8n-chat__welcome-screen__footer {
       display: none !important;
     }
   </style>
@@ -110,6 +115,7 @@
   <div id="chat-container">
     <div id="n8n-chat"></div>
   </div>
+
   <!-- Footer personalizzato -->
   <div id="custom-footer">Powered by <strong>EV-AI</strong></div>
 
@@ -137,18 +143,19 @@
       }
     });
 
-    // MutationObserver per rimuovere eventuali elementi contenenti "Powered by n8n"
+    // Rimuove dinamicamente eventuali elementi con "Powered by n8n"
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
           if (node.nodeType === Node.ELEMENT_NODE) {
+            // Se il nodo stesso contiene la stringa
             if (node.textContent && node.textContent.includes("Powered by n8n")) {
               node.remove();
             }
-            // Controlla anche all'interno dei discendenti
+            // Controlla anche i figli
             node.querySelectorAll("*").forEach(elem => {
               if (elem.textContent && elem.textContent.includes("Powered by n8n")) {
-                elem.style.display = 'none';
+                elem.remove();
               }
             });
           }
