@@ -21,14 +21,11 @@
       --chat--color-dark: #101330;
       --chat--color-disabled: #777980;
       --chat--color-typing: #404040;
-
       --chat--spacing: 1rem;
       --chat--border-radius: 0.25rem;
       --chat--transition-duration: 0.15s;
-
       --chat--window--width: 400px;
       --chat--window--height: 600px;
-
       --chat--header-height: auto;
       --chat--header--padding: var(--chat--spacing);
       --chat--header--background: var(--chat--color-dark);
@@ -38,9 +35,7 @@
       --chat--heading--font-size: 2em;
       --chat--subtitle--font-size: inherit;
       --chat--subtitle--line-height: 1.8;
-
       --chat--textarea--height: 50px;
-
       --chat--message--font-size: 1rem;
       --chat--message--padding: var(--chat--spacing);
       --chat--message--border-radius: var(--chat--border-radius);
@@ -52,7 +47,6 @@
       --chat--message--user--color: var(--chat--color-white);
       --chat--message--user--border: none;
       --chat--message--pre--background: rgba(0, 0, 0, 0.05);
-
       --chat--toggle--background: var(--chat--color-primary);
       --chat--toggle--hover--background: var(--chat--color-primary-shade-50);
       --chat--toggle--active--background: var(--chat--color-primary-shade-100);
@@ -100,13 +94,9 @@
     }
 
     /* Nasconde il footer originale di n8n (chat) */
-   .n8n-chat__footer {
-      display: none !important;
-    }
-    
-
-    /* Nasconde il footer originale di n8n (welcome screen) */
-    .n8n-chat__welcome-screen__footer {
+    .n8n-chat__footer,
+    .n8n-chat__welcome-screen__footer,
+    .n8n-powered-by {
       display: none !important;
     }
   </style>
@@ -116,13 +106,12 @@
   <div id="chat-container">
     <div id="n8n-chat"></div>
   </div>
-
   <!-- Footer personalizzato -->
   <div id="custom-footer">Powered by <strong>EV-AI</strong></div>
-
   <script type="module">
     import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
+    // Configurazione del chatbot
     createChat({
       webhookUrl: 'https://n8n-n8n.hcrxqs.easypanel.host/webhook/643b6895-06ac-4ba6-861e-f14bb4949d19/chat',
       target: '#n8n-chat',
@@ -151,18 +140,20 @@
           if (node.nodeType === Node.ELEMENT_NODE) {
             // Se il nodo stesso contiene la stringa
             if (node.textContent && node.textContent.includes("Powered by n8n")) {
-              node.remove();
+              node.style.display = "none"; // Nasconde l'elemento
             }
             // Controlla anche i figli
             node.querySelectorAll("*").forEach(elem => {
               if (elem.textContent && elem.textContent.includes("Powered by n8n")) {
-                elem.remove();
+                elem.style.display = "none"; // Nasconde l'elemento
               }
             });
           }
         });
       });
     });
+
+    // Avvia l'osservatore immediatamente dopo l'inizializzazione del chatbot
     observer.observe(document.body, { childList: true, subtree: true });
   </script>
 </body>
