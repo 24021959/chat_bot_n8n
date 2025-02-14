@@ -4,15 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chatbot EV-AI</title>
-  
-  <!-- Stili di n8n Chat -->
   <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
-  
   <style>
-    /* =========================================================
-       TUTTO IL TUO CSS ORIGINALE, con le variabili e i vari stili
-       ========================================================= */
-
+    /* Variabili per la grafica */
     :root {
       --chat--color-primary: #e74266;
       --chat--color-primary-shade-50: #db4061;
@@ -105,18 +99,15 @@
       z-index: 1000;
     }
 
-    /* Nasconde il footer originale di n8n (chat in corso) */
+    /* Nasconde il footer originale di n8n (chat) */
     .n8n-chat__footer {
       display: none !important;
     }
 
-    /* Nasconde il footer della welcome screen di n8n */
+    /* Nasconde il footer originale di n8n (welcome screen) */
     .n8n-chat__welcome-screen__footer {
       display: none !important;
     }
-
-    /* Se vedi un'altra classe contenente "Powered by n8n",
-       aggiungila qui con display: none !important; */
   </style>
 </head>
 <body>
@@ -124,11 +115,9 @@
   <div id="chat-container">
     <div id="n8n-chat"></div>
   </div>
-  
+
   <!-- Footer personalizzato -->
-  <div id="custom-footer">
-    Powered by <strong>EV-AI</strong>
-  </div>
+  <div id="custom-footer">Powered by <strong>EV-AI</strong></div>
 
   <script type="module">
     import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
@@ -153,36 +142,25 @@
         }
       }
     });
-  </script>
 
-  <!-- Script per rimuovere dinamicamente "Powered by n8n" -->
-  <script>
-    function removePoweredByN8n(root) {
-      // Se il nodo stesso contiene la stringa
-      if (root.textContent && root.textContent.includes("Powered by n8n")) {
-        root.remove();
-        return;
-      }
-      // Controlla i discendenti
-      root.querySelectorAll("*").forEach(elem => {
-        if (elem.textContent && elem.textContent.includes("Powered by n8n")) {
-          elem.remove();
-        }
-      });
-    }
-
-    // Prima rimozione su tutto il body
-    removePoweredByN8n(document.body);
-
-    // Poi osserva eventuali nuovi nodi aggiunti
+    // Rimuove dinamicamente eventuali elementi con "Powered by n8n"
     const observer = new MutationObserver(mutations => {
-      for (const mutation of mutations) {
-        for (const node of mutation.addedNodes) {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
           if (node.nodeType === Node.ELEMENT_NODE) {
-            removePoweredByN8n(node);
+            // Se il nodo stesso contiene la stringa
+            if (node.textContent && node.textContent.includes("Powered by n8n")) {
+              node.remove();
+            }
+            // Controlla anche i figli
+            node.querySelectorAll("*").forEach(elem => {
+              if (elem.textContent && elem.textContent.includes("Powered by n8n")) {
+                elem.remove();
+              }
+            });
           }
-        }
-      }
+        });
+      });
     });
     observer.observe(document.body, { childList: true, subtree: true });
   </script>
