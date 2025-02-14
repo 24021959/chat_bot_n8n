@@ -20,12 +20,14 @@
         <button onclick="sendMessage()">Invia</button>
     </div>
     <script>
-        const webhookUrl = "https://tuo-n8n-webhook-url.com";
+        const webhookUrl = "https://n8n-n8n.hcrxqs.easypanel.host/webhook/643b6895-06ac-4ba6-861e-f14bb4949d19/chat";
 
         function sendMessage() {
             let input = document.getElementById("userInput");
             let messages = document.getElementById("messages");
-            let userMessage = input.value;
+            let userMessage = input.value.trim();
+
+            if (userMessage === "") return;  // Non inviare messaggi vuoti
 
             messages.innerHTML += `<p><strong>Tu:</strong> ${userMessage}</p>`;
             input.value = "";
@@ -37,9 +39,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                messages.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
+                messages.innerHTML += `<p><strong>Bot:</strong> ${data.response || "Errore nella risposta"}</p>`;
             })
-            .catch(error => console.error("Errore:", error));
+            .catch(error => {
+                console.error("Errore:", error);
+                messages.innerHTML += `<p style="color: red;"><strong>Errore:</strong> Impossibile connettersi al server.</p>`;
+            });
         }
     </script>
 </body>
